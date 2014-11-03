@@ -13,6 +13,7 @@
 		4DCE5B791A06F97800147E1E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DCE5B781A06F97800147E1E /* Images.xcassets */; };
 		4DCE5B7C1A06F97800147E1E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DCE5B7A1A06F97800147E1E /* LaunchScreen.xib */; };
 		4DCE5B881A06F97800147E1E /* iOSAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCE5B871A06F97800147E1E /* iOSAppTests.swift */; };
+		4DCE5B921A075B0300147E1E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DCE5B911A075B0300147E1E /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		4DCE5B811A06F97800147E1E /* iOSAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DCE5B861A06F97800147E1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DCE5B871A06F97800147E1E /* iOSAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppTests.swift; sourceTree = "<group>"; };
+		4DCE5B911A075B0300147E1E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DCE5B921A075B0300147E1E /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +62,7 @@
 		4DCE5B631A06F97800147E1E = {
 			isa = PBXGroup;
 			children = (
+				4DCE5B911A075B0300147E1E /* CoreLocation.framework */,
 				4DCE5B6E1A06F97800147E1E /* iOSApp */,
 				4DCE5B841A06F97800147E1E /* iOSAppTests */,
 				4DCE5B6D1A06F97800147E1E /* Products */,
@@ -405,6 +409,7 @@
 				4DCE5B8D1A06F97800147E1E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4DCE5B8E1A06F97800147E1E /* Build configuration list for PBXNativeTarget "iOSAppTests" */ = {
 			isa = XCConfigurationList;
@@ -413,6 +418,7 @@
 				4DCE5B901A06F97800147E1E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
