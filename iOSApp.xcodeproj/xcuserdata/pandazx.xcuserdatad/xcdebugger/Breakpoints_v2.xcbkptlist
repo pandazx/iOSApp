@@ -10,12 +10,74 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iOSApp/ViewController.swift"
-            timestampString = "436689222.792894"
+            timestampString = "436694664.339678"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
             landmarkName = "locationManager(_:didFailWithError:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iOSApp/ViewController.swift"
+            timestampString = "436694664.339678"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "displayLocationInfo(_:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSApp.ViewController.displayLocationInfo (iOSApp.ViewController)(ObjectiveC.CLPlacemark) -&gt; ()"
+                  moduleName = "iOSApp"
+                  urlString = "file:///Users/pandazx/Develop/ios/iOSApp/iOSApp/ViewController.swift"
+                  timestampString = "436694338.730227"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "2673">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSApp.ViewController.displayLocationInfo (iOSApp.ViewController)(ObjectiveC.CLPlacemark) -&gt; ()"
+                  moduleName = "iOSApp"
+                  urlString = "file:///Users/pandazx/Develop/ios/iOSApp/iOSApp/ViewController.swift"
+                  timestampString = "436694338.730571"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "5049">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iOSApp/ViewController.swift"
+            timestampString = "436694664.339678"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "displayLocationInfo(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

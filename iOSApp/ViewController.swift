@@ -15,8 +15,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var longitude: CLLocationDegrees
     var latitude: CLLocationDegrees
     
-    @IBOutlet var lonLabel: UILabel!
-    @IBOutlet var latLabel: UILabel!
+    @IBOutlet var latlonLabel: UILabel!
+    @IBOutlet var addressLabel: UILabel!
 
     required init(coder aDecoder: NSCoder) {
         lm = CLLocationManager()
@@ -41,7 +41,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let status = CLLocationManager.authorizationStatus()
         
         // まだ認証が得られていない場合は、認証ダイアログを表示
-        if(status == CLAuthorizationStatus.NotDetermined) {
+        if status == CLAuthorizationStatus.NotDetermined {
             println("didChangeAuthorizationStatus:\(status)");
             // まだ承認が得られていない場合は、認証ダイアログを表示
             self.lm.requestAlwaysAuthorization()
@@ -58,8 +58,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         longitude = newLocation.coordinate.longitude
         latitude = newLocation.coordinate.latitude
-        self.lonLabel.text = "\(longitude)"
-        self.latLabel.text = "\(latitude)"
+        self.latlonLabel.text = "\(longitude), \(latitude)"
+        
+        // get address info
+        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {(placemarks, error)->Void in
+            if error != nil {
+                println("Reverse geocoder failed with error" + error.localizedDescription)
+                return
+            }
+            if placemarks.count > 0 {
+                let pm = placemarks[0] as CLPlacemark
+                self.displayLocationInfo(pm)
+                //stop updating location to save battery life
+                self.lm.stopUpdatingLocation()
+            } else {
+                println("Problem with the data received from geocoder")
+            }
+        })
+    }
+    
+    // 位置情報表示
+    func displayLocationInfo(placemark: CLPlacemark) {
+        var address: String = ""
+        address = placemark.locality != nil ? placemark.locality : ""
+        address += ","
+        address += placemark.postalCode != nil ? placemark.postalCode : ""
+        address += ","
+        address += placemark.administrativeArea != nil ? placemark.administrativeArea : ""
+        address += ","
+        address += placemark.country != nil ? placemark.country : ""
+        self.addressLabel.text = address
     }
     
     // 位置情報取得失敗時
