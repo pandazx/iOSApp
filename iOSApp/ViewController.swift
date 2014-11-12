@@ -124,12 +124,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
             var success:Bool = parser.parse()
             
             if success {
-                println(self.strXMLData)
-                //self.poiLabel.text = self.strXMLData
-                self.poiLabel.text = "parse success"
+                let start:String.Index = advance(self.strXMLData.startIndex, 1)
+                let end:String.Index = advance(self.strXMLData.startIndex, 20)
+                let a:String = self.strXMLData.substringWithRange(Range<String.Index>(start: start, end: end))
+                self.poiLabel.text = a
+                //self.poiLabel.text = "成功"
+                //println(self.strXMLData)
             } else {
                 self.poiLabel.text = "parse failuer!"
-                println("parse failure!")
+//                println("parse failure!")
             }
         }
         task.resume()
@@ -145,9 +148,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
             passData = true
             firstName = false
         }
-        if elementName == "Description" {
-            passData = true
-        }
     }
     
     func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
@@ -160,14 +160,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
             passName=false
             passData=false
         }
-        if elementName == "Description" {
-            passData=false
-        }
     }
     
     func parser(parser: NSXMLParser!, foundCharacters string: String!) {
         if passData {
-            strXMLData += "\n" + string
+            //strXMLData += "\n" + string
+            strXMLData += "," + string
         }
     }
     

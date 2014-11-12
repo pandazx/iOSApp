@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <VariablesViewState
    version = "1.0">
-   <ContextStates>
-      <ContextState
-         contextName = "iOSApp.ViewController.(testYOLP (iOSApp.ViewController) -&gt; () -&gt; ()).(closure #1):ViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "strXMLData">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-   </ContextStates>
 </VariablesViewState>
