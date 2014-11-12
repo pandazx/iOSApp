@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 kenji. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import CoreLocation
 
@@ -17,6 +18,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     @IBOutlet var latlonLabel: UILabel!
     @IBOutlet var addressLabel: UILabel!
+    @IBOutlet var poiLabel: UILabel!
 
     required init(coder aDecoder: NSCoder) {
         lm = CLLocationManager()
@@ -104,8 +106,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
 
     var strXMLData:String = ""
     var currentElement:String = ""
-    var passData:Bool=false
-    var passName:Bool=false
+    var passHit:Bool = false
+    var passData:Bool = false
+    var passName:Bool = false
+    var firstName:Bool = true
     
     // YLOP API test
     func testYOLP() {
@@ -121,8 +125,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
             
             if success {
                 println(self.strXMLData)
-                //lblNameData.text=self.strXMLData
+                //self.poiLabel.text = self.strXMLData
+                self.poiLabel.text = "parse success"
             } else {
+                self.poiLabel.text = "parse failuer!"
                 println("parse failure!")
             }
         }
@@ -130,35 +136,38 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     }
     
     func parser(parser: NSXMLParser!,didStartElement elementName: String!, namespaceURI: String!, qualifiedName : String!, attributes attributeDict: NSDictionary!) {
-        currentElement=elementName;
-        if(elementName=="id" || elementName=="Name" || elementName=="cost" || elementName=="Description")
-        {
-            if(elementName=="Name"){
-                passName=true;
-            }
-            passData=true;
+        currentElement = elementName
+        if elementName == "Hit" {
+            passHit = true
+        }
+        if firstName && elementName == "Name" {
+            passName = true
+            passData = true
+            firstName = false
+        }
+        if elementName == "Description" {
+            passData = true
         }
     }
     
     func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
-        currentElement="";
-        if(elementName=="id" || elementName=="Name" || elementName=="cost" || elementName=="Description")
-        {
-            if(elementName=="Name"){
-                passName=false;
-            }
-            passData=false;
+        currentElement = ""
+        if elementName == "Hit" {
+            passHit = false
+            firstName = true
+        }
+        if elementName == "Name" {
+            passName=false
+            passData=false
+        }
+        if elementName == "Description" {
+            passData=false
         }
     }
     
     func parser(parser: NSXMLParser!, foundCharacters string: String!) {
-        if(passName){
-            strXMLData=strXMLData+"\n\n"+string
-        }
-        
-        if(passData)
-        {
-            println(string)
+        if passData {
+            strXMLData += "\n" + string
         }
     }
     

@@ -43,6 +43,12 @@
                                     <action selector="btnGetLocation:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="GHq-gq-jNy"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h08-cz-6iB">
+                                <rect key="frame" x="16" y="264" width="288" height="214"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -50,6 +56,7 @@
                     <connections>
                         <outlet property="addressLabel" destination="zHV-Bm-ukF" id="NwL-Yk-n3x"/>
                         <outlet property="latlonLabel" destination="gu2-Ou-sT5" id="Ixl-p6-hIE"/>
+                        <outlet property="poiLabel" destination="h08-cz-6iB" id="YTz-md-hGY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
