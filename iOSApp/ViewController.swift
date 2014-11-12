@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var lm:CLLocationManager
     var longitude: CLLocationDegrees
@@ -18,7 +18,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     @IBOutlet var latlonLabel: UILabel!
     @IBOutlet var addressLabel: UILabel!
-    @IBOutlet var poiLabel: UILabel!
+    @IBOutlet var tableView: UITableView!
+    
+    let cellIdentifier = "cell"
+    var items = ["Monday", "Tuesday", "Wednesday", "ThursDay", "Friday", "Saturday", "Sunday"]
 
     required init(coder aDecoder: NSCoder) {
         lm = CLLocationManager()
@@ -34,6 +37,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: self.cellIdentifier)
         
         // 現在地の取得
         lm = CLLocationManager()
@@ -54,7 +58,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         // 取得頻度の設定
         lm.distanceFilter = 100
         
-        testYOLP()
+        //testYOLP()
     }
 
     // 位置情報取得成功時
@@ -124,15 +128,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
             var success:Bool = parser.parse()
             
             if success {
+                println(self.strXMLData)
+                // TODO ここでtable viewに登録できるように配列にパースする
                 let start:String.Index = advance(self.strXMLData.startIndex, 1)
                 let end:String.Index = advance(self.strXMLData.startIndex, 20)
                 let a:String = self.strXMLData.substringWithRange(Range<String.Index>(start: start, end: end))
-                self.poiLabel.text = a
-                //self.poiLabel.text = "成功"
-                //println(self.strXMLData)
             } else {
-                self.poiLabel.text = "parse failuer!"
-//                println("parse failure!")
+                println("parse failure!")
             }
         }
         task.resume()
@@ -171,5 +173,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     func parser(parser: NSXMLParser!, parseErrorOccurred parseError: NSError!) {
         NSLog("failure error: %@", parseError)
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.items.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier) as UITableViewCell
+        cell.textLabel.text = self.items[indexPath.row]
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println("You selected cell #\(indexPath.row)!")
     }
 }

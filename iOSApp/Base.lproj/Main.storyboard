@@ -43,12 +43,14 @@
                                     <action selector="btnGetLocation:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="GHq-gq-jNy"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h08-cz-6iB">
-                                <rect key="frame" x="17" y="242" width="288" height="155"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="7"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KRO-D8-mbg">
+                                <rect key="frame" x="16" y="240" width="288" height="284"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="X5n-up-taF"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="gxB-gf-JPm"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -56,7 +58,7 @@
                     <connections>
                         <outlet property="addressLabel" destination="zHV-Bm-ukF" id="NwL-Yk-n3x"/>
                         <outlet property="latlonLabel" destination="gu2-Ou-sT5" id="Ixl-p6-hIE"/>
-                        <outlet property="poiLabel" destination="h08-cz-6iB" id="YTz-md-hGY"/>
+                        <outlet property="tableView" destination="KRO-D8-mbg" id="iNf-1F-Q8M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
