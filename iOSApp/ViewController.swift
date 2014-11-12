@@ -117,12 +117,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
             // Parse the XML
             var parser = NSXMLParser(data: data)
             parser.delegate = self
-            
-            var success:Bool
-            success = parser.parse()
+            var success:Bool = parser.parse()
             
             if success {
-                println("parse success!")
                 println(self.strXMLData)
                 //lblNameData.text=self.strXMLData
             } else {
@@ -130,25 +127,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
             }
         }
         task.resume()
-    }
-    
-    func xmlParseTest() {
-        var url:String="http://api.androidhive.info/pizza/?format=xml"
-        var urlToSend: NSURL = NSURL(string: url)!
-        // Parse the XML
-        var parser = NSXMLParser(contentsOfURL: urlToSend)
-        parser?.delegate = self
-        
-        var success:Bool!
-        success = parser?.parse()
-        
-        if (success != nil) {
-            println("parse success!")
-            println(self.strXMLData)
-            //lblNameData.text=self.strXMLData
-        } else {
-            println("parse failure!")
-        }
     }
     
     func parser(parser: NSXMLParser!,didStartElement elementName: String!, namespaceURI: String!, qualifiedName : String!, attributes attributeDict: NSDictionary!) {
