@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDelegate {
     
     var lm:CLLocationManager
     var longitude: CLLocationDegrees
@@ -51,6 +51,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         lm.desiredAccuracy = kCLLocationAccuracyBest
         // 取得頻度の設定
         lm.distanceFilter = 100
+        
+        testYOLP()
     }
 
     // 位置情報取得成功時
@@ -100,4 +102,109 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    // ２つの方法があり、どちらも使える。両者の違いは不明
+    func testHTTPRequest() {
+        // use NSURLSession
+        let url = NSURL(string: "http://www.stackoverflow.com")
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+            println(NSString(data: data, encoding: NSUTF8StringEncoding))
+        }
+        task.resume()
+        
+        // use NSURLConnection
+        let request = NSURLRequest(URL: url!)
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
+            println(NSString(data: data, encoding: NSUTF8StringEncoding))
+        }
+    }
+    
+    var strXMLData:String = ""
+    var currentElement:String = ""
+    var passData:Bool=false
+    var passName:Bool=false
+    
+    // YLOP API test
+    func testYOLP() {
+        // use NSURLSession
+        let url = NSURL(string: "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=dj0zaiZpPVQzb20wbm9PUHkyayZzPWNvbnN1bWVyc2VjcmV0Jng9YWU-&category_id=635&sort=-sold")
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+            //println(NSString(data: data, encoding: NSUTF8StringEncoding))
+            
+            var url:String="http://api.androidhive.info/pizza/?format=xml"
+            var urlToSend: NSURL = NSURL(string: url)!
+            // Parse the XML
+            var parser = NSXMLParser(contentsOfURL: urlToSend)
+            parser?.delegate = self
+            
+            var success:Bool!
+            success = parser?.parse()
+            
+            if (success != nil) {
+                println("parse success!")
+                println(self.strXMLData)
+                //lblNameData.text=self.strXMLData
+            } else {
+                println("parse failure!")
+            }
+        }
+        task.resume()
+    }
+    
+    func parser(parser: NSXMLParser!,didStartElement elementName: String!, namespaceURI: String!, qualifiedName : String!, attributes attributeDict: NSDictionary!) {
+        currentElement=elementName;
+        if(elementName=="id" || elementName=="name" || elementName=="cost" || elementName=="description")
+        {
+            if(elementName=="name"){
+                passName=true;
+            }
+            passData=true;
+        }
+    }
+    
+    func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
+        currentElement="";
+        if(elementName=="id" || elementName=="name" || elementName=="cost" || elementName=="description")
+        {
+            if(elementName=="name"){
+                passName=false;
+            }
+            passData=false;
+        }
+    }
+    
+    func parser(parser: NSXMLParser!, foundCharacters string: String!) {
+        if(passName){
+            strXMLData=strXMLData+"\n\n"+string
+        }
+        
+        if(passData)
+        {
+            println(string)
+        }
+    }
+    
+    func parser(parser: NSXMLParser!, parseErrorOccurred parseError: NSError!) {
+        NSLog("failure error: %@", parseError)
+    }
+    
+/*
+    var urlResponse : NSURLResponse
+    var data: NSData
+    func parseXml(delegate: NSXMLParserDelegate, error: NSErrorPointer = nil) -> Bool {
+        
+        let httpResponse = urlResponse as NSHTTPURLResponse
+        if httpResponse.statusCode == 200 {
+            let xmlParser = NSXMLParser(data: data)
+            xmlParser.delegate = delegate
+            xmlParser.parse()
+            return true
+        }
+        else if error != nil {
+            error.memory = NSError(domain: "HTTP_ERROR_CODE", code: httpResponse.statusCode, userInfo: nil)
+        }
+        
+        return false
+    }
+*/
+    
 }
