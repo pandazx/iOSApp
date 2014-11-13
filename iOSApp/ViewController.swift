@@ -64,9 +64,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     // 位置情報取得成功時
     func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!){
         
-        longitude = newLocation.coordinate.longitude
         latitude = newLocation.coordinate.latitude
-        self.latlonLabel.text = "\(longitude), \(latitude)"
+        longitude = newLocation.coordinate.longitude
+        self.latlonLabel.text = "\(latitude), \(longitude)"
         
         // get address info
         CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {(placemarks, error)->Void in
@@ -90,13 +90,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     // 位置情報表示
     func displayLocationInfo(placemark: CLPlacemark) {
         var address: String = ""
-        address = placemark.locality != nil ? placemark.locality : ""
+        address = placemark.postalCode != nil ? placemark.postalCode : ""
         address += ","
-        address += placemark.postalCode != nil ? placemark.postalCode : ""
+        address += placemark.country != nil ? placemark.country : ""
         address += ","
         address += placemark.administrativeArea != nil ? placemark.administrativeArea : ""
         address += ","
-        address += placemark.country != nil ? placemark.country : ""
+        address += placemark.locality != nil ? placemark.locality : ""
         self.addressLabel.text = address
     }
     
