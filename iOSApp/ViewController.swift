@@ -17,6 +17,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     var lm:CLLocationManager
     var longitude: CLLocationDegrees
     var latitude: CLLocationDegrees
+    var gpsList:[String] = []
     
     @IBOutlet var latlonLabel: UILabel!
     @IBOutlet var addressLabel: UILabel!
@@ -66,7 +67,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         
         latitude = newLocation.coordinate.latitude
         longitude = newLocation.coordinate.longitude
-        self.latlonLabel.text = "\(latitude), \(longitude)"
+        let latlon = "\(latitude),\(longitude)"
+        self.latlonLabel.text = latlon
         
         // get address info
         CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler: {(placemarks, error)->Void in
@@ -84,7 +86,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
             }
         })
         
-        self.updateShopTable(latitude, longitude: longitude)
+        addGps(latlon)
+        self.updateShopTable()
+    }
+    
+    // 未登録の値のみ追加
+    // TODO Geohashでぶつからなかったら登録するにした方がいいかも
+    // ひとまず、簡単にlat,lonの先頭何文字かが一致したら、登録済みと判定するか
+    func addGps(elem :String) {
+        for latlon in self.gpsList {
+            if latlon == elem {
+                return
+            }
+        }
+        self.gpsList.append(elem)
     }
     
     // 位置情報表示
@@ -120,12 +135,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     // lat=35.665662327484, lon=139.73091159273
     
     // get shop list by YLOP and update TableView
-    func updateShopTable(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+    func updateShopTable() {
+        // init items of TableView
+        self.items = []
+        
+        // get shops and update TableView
+        for gps in self.gpsList {
+            getShops(gps)
+            sleep(1)
+        }
+    }
+    
+    // 非同期アクセスでお店リストを取得し、取得できたら、現状のテーブルと結合して再表示
+    func getShops(gps: String) {
+        var gpsArr = gps.componentsSeparatedByString(",")
+        
         // 周辺3kmのお店取得
         var urlStr = "http://search.olp.yahooapis.jp/OpenLocalPlatform/V1/localSearch?"
         urlStr += "appid=" + yahooAppId
-        urlStr += "&lat=" + latitude.description
-        urlStr += "&lon=" + longitude.description
+        urlStr += "&lat=" + gpsArr[0]
+        urlStr += "&lon=" + gpsArr[1]
         urlStr += "&dist=3"
         let url = NSURL(string: urlStr)
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
@@ -155,7 +184,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         var cells = strXMLData.componentsSeparatedByString(",")
         // 先頭の不要なカンマで作成された要素を削除
         cells.removeAtIndex(0)
-        self.items = cells
+        self.items += cells
         self.tableView.reloadData()
     }
     
