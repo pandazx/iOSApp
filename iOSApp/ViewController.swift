@@ -12,6 +12,8 @@ import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDelegate, UITableViewDataSource, UITableViewDelegate {
     
+    let yahooAppId = "dj0zaiZpPVQzb20wbm9PUHkyayZzPWNvbnN1bWVyc2VjcmV0Jng9YWU-"
+
     var lm:CLLocationManager
     var longitude: CLLocationDegrees
     var latitude: CLLocationDegrees
@@ -21,7 +23,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     @IBOutlet var tableView: UITableView!
     
     let cellIdentifier = "cell"
-    var items = ["Monday", "Tuesday", "Wednesday", "ThursDay", "Friday", "Saturday", "Sunday"]
+    var items = ["empty"]
 
     required init(coder aDecoder: NSCoder) {
         lm = CLLocationManager()
@@ -57,8 +59,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         lm.desiredAccuracy = kCLLocationAccuracyBest
         // 取得頻度の設定
         lm.distanceFilter = 100
-        
-        testYLOP()
     }
 
     // 位置情報取得成功時
@@ -83,6 +83,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
                 println("Problem with the data received from geocoder")
             }
         })
+        
+        self.updateShopTable(latitude, longitude: longitude)
     }
     
     // 位置情報表示
@@ -115,12 +117,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     var passName:Bool = false
     var firstName:Bool = true
     
-    // YLOP API test
-    func testYLOP() {
-        // 家電製品一覧取得
-        //let url = NSURL(string: "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=dj0zaiZpPVQzb20wbm9PUHkyayZzPWNvbnN1bWVyc2VjcmV0Jng9YWU-&category_id=635&sort=-sold")
-        // 東京ミッドタウン周辺3kmのお店取得
-        let url = NSURL(string: "http://search.olp.yahooapis.jp/OpenLocalPlatform/V1/localSearch?appid=dj0zaiZpPVQzb20wbm9PUHkyayZzPWNvbnN1bWVyc2VjcmV0Jng9YWU-&lat=35.665662327484&lon=139.73091159273&dist=3")
+    // lat=35.665662327484, lon=139.73091159273
+    
+    // get shop list by YLOP and update TableView
+    func updateShopTable(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        // 周辺3kmのお店取得
+        var urlStr = "http://search.olp.yahooapis.jp/OpenLocalPlatform/V1/localSearch?"
+        urlStr += "appid=" + yahooAppId
+        urlStr += "&lat=" + latitude.description
+        urlStr += "&lon=" + longitude.description
+        urlStr += "&dist=3"
+        let url = NSURL(string: urlStr)
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             //println(NSString(data: data, encoding: NSUTF8StringEncoding))
             if self.parseXML(data) {
