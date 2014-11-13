@@ -91,15 +91,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     }
     
     // 未登録の値のみ追加
-    // TODO Geohashでぶつからなかったら登録するにした方がいいかも
-    // ひとまず、簡単にlat,lonの先頭何文字かが一致したら、登録済みと判定するか
     func addGps(elem :String) {
         for latlon in self.gpsList {
-            if latlon == elem {
+            if equalLatlon(latlon, elem2: elem) {
                 return
             }
         }
         self.gpsList.append(elem)
+    }
+    
+    // lat,lonの先頭7文字かが一致したら、同一緯度経度と判定
+    // TODO Geohashでぶつからなかったら登録するにした方がいいかも
+    func equalLatlon(elem1 :String, elem2 :String) -> Bool {
+        let comp1 = elem1.substringToIndex(advance(elem1.startIndex, 7))
+        let comp2 = elem2.substringToIndex(advance(elem2.startIndex, 7))
+        return comp1 == comp2
     }
     
     // 位置情報表示
@@ -184,8 +190,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         var cells = strXMLData.componentsSeparatedByString(",")
         // 先頭の不要なカンマで作成された要素を削除
         cells.removeAtIndex(0)
-        self.items += cells
+        addItems(cells)
         self.tableView.reloadData()
+    }
+    
+    // お店の追加。ただし、同じ店名があったら追加しない
+    func addItems(cells :[String]) {
+        for cell in cells {
+            var flag = true
+            for item in self.items {
+                if cell == item {
+                    flag = false
+                    break
+                }
+            }
+            if flag {
+                self.items.append(cell)
+            }
+        }
     }
     
     func parser(parser: NSXMLParser!,didStartElement elementName: String!, namespaceURI: String!, qualifiedName : String!, attributes attributeDict: NSDictionary!) {
