@@ -58,7 +58,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         // 取得頻度の設定
         lm.distanceFilter = 100
         
-        //testYOLP()
+        testYLOP()
     }
 
     // 位置情報取得成功時
@@ -116,28 +116,38 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     var firstName:Bool = true
     
     // YLOP API test
-    func testYOLP() {
+    func testYLOP() {
         // use NSURLSession
         let url = NSURL(string: "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=dj0zaiZpPVQzb20wbm9PUHkyayZzPWNvbnN1bWVyc2VjcmV0Jng9YWU-&category_id=635&sort=-sold")
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             //println(NSString(data: data, encoding: NSUTF8StringEncoding))
-            
-            // Parse the XML
-            var parser = NSXMLParser(data: data)
-            parser.delegate = self
-            var success:Bool = parser.parse()
-            
-            if success {
-                println(self.strXMLData)
-                // TODO ここでtable viewに登録できるように配列にパースする
-                let start:String.Index = advance(self.strXMLData.startIndex, 1)
-                let end:String.Index = advance(self.strXMLData.startIndex, 20)
-                let a:String = self.strXMLData.substringWithRange(Range<String.Index>(start: start, end: end))
-            } else {
-                println("parse failure!")
+            if self.parseXML(data) {
+                self.updateTableData(self.strXMLData)
             }
         }
         task.resume()
+    }
+    
+    func parseXML(data: NSData) -> Bool {
+        var parser = NSXMLParser(data: data)
+        parser.delegate = self
+        var success:Bool = parser.parse()
+        
+        if success {
+            println(self.strXMLData)
+            return true
+        } else {
+            println("parse failure!")
+            return false
+        }
+    }
+    
+    func updateTableData(strXMLData: String) {
+        var cells = strXMLData.componentsSeparatedByString(",")
+        // 先頭の不要なカンマで作成された要素を削除
+        cells.removeAtIndex(0)
+        self.items = cells
+        self.tableView.reloadData()
     }
     
     func parser(parser: NSXMLParser!,didStartElement elementName: String!, namespaceURI: String!, qualifiedName : String!, attributes attributeDict: NSDictionary!) {

@@ -47,8 +47,8 @@
                                 <rect key="frame" x="16" y="240" width="288" height="284"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="X5n-up-taF"/>
-                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="gxB-gf-JPm"/>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="rz5-iV-M86"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="P21-gA-O31"/>
                                 </connections>
                             </tableView>
                         </subviews>
