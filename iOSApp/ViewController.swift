@@ -21,6 +21,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     @IBOutlet var latlonLabel: UILabel!
     @IBOutlet var addressLabel: UILabel!
+    @IBOutlet var gpsPointNumLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     
     let cellIdentifier = "cell"
@@ -87,6 +88,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         })
         
         addGps(latlon)
+        gpsPointNumLabel.text = String(self.gpsList.count)
         self.updateShopTable()
     }
     
@@ -103,8 +105,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     // lat,lonの先頭7文字かが一致したら、同一緯度経度と判定
     // TODO Geohashでぶつからなかったら登録するにした方がいいかも
     func equalLatlon(elem1 :String, elem2 :String) -> Bool {
-        let comp1 = elem1.substringToIndex(advance(elem1.startIndex, 7))
-        let comp2 = elem2.substringToIndex(advance(elem2.startIndex, 7))
+        let comp1 = elem1.substringToIndex(advance(elem1.startIndex, 6))
+        let comp2 = elem2.substringToIndex(advance(elem2.startIndex, 6))
         return comp1 == comp2
     }
     
