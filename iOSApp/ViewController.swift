@@ -150,6 +150,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         // get shops and update TableView
         for gps in self.gpsList {
             getShops(gps)
+            // strXMLData が非同期に平行アクセスされて、おかしくなる可能性が考えられるため、スリープを入れている
             sleep(1)
         }
     }
