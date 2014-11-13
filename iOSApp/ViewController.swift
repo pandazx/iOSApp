@@ -117,8 +117,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     // YLOP API test
     func testYLOP() {
-        // use NSURLSession
-        let url = NSURL(string: "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=dj0zaiZpPVQzb20wbm9PUHkyayZzPWNvbnN1bWVyc2VjcmV0Jng9YWU-&category_id=635&sort=-sold")
+        // 家電製品一覧取得
+        //let url = NSURL(string: "http://shopping.yahooapis.jp/ShoppingWebService/V1/itemSearch?appid=dj0zaiZpPVQzb20wbm9PUHkyayZzPWNvbnN1bWVyc2VjcmV0Jng9YWU-&category_id=635&sort=-sold")
+        // 東京ミッドタウン周辺3kmのお店取得
+        let url = NSURL(string: "http://search.olp.yahooapis.jp/OpenLocalPlatform/V1/localSearch?appid=dj0zaiZpPVQzb20wbm9PUHkyayZzPWNvbnN1bWVyc2VjcmV0Jng9YWU-&lat=35.665662327484&lon=139.73091159273&dist=3")
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             //println(NSString(data: data, encoding: NSUTF8StringEncoding))
             if self.parseXML(data) {
@@ -152,7 +154,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     func parser(parser: NSXMLParser!,didStartElement elementName: String!, namespaceURI: String!, qualifiedName : String!, attributes attributeDict: NSDictionary!) {
         currentElement = elementName
-        if elementName == "Hit" {
+        if elementName == "Feature" {
             passHit = true
         }
         if firstName && elementName == "Name" {
@@ -164,7 +166,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     func parser(parser: NSXMLParser!, didEndElement elementName: String!, namespaceURI: String!, qualifiedName qName: String!) {
         currentElement = ""
-        if elementName == "Hit" {
+        if elementName == "Feature" {
             passHit = false
             firstName = true
         }
