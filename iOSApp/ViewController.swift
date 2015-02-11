@@ -191,12 +191,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     func getShops(gps: String) {
         var gpsArr = gps.componentsSeparatedByString(",")
         
-        // 周辺3kmのお店取得
+        // 周辺1kmのお店取得
         var urlStr = "http://search.olp.yahooapis.jp/OpenLocalPlatform/V1/localSearch?"
         urlStr += "appid=" + yahooAppId
         urlStr += "&lat=" + gpsArr[0]
         urlStr += "&lon=" + gpsArr[1]
-        urlStr += "&dist=3"
+        urlStr += "&dist=1"
         let url = NSURL(string: urlStr)
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             //println(NSString(data: data, encoding: NSUTF8StringEncoding))
