@@ -254,7 +254,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier) as UITableViewCell
-        cell.textLabel.text = self.items[indexPath.row]
+        cell.textLabel?.text = self.items[indexPath.row]
         return cell
     }
     
