@@ -5,7 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Use CoreLocation!</string>
+	<string>Your location is used to get shop list.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to get shop list.</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

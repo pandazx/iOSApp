@@ -28,15 +28,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
     var items = ["empty"]
 
     required init(coder aDecoder: NSCoder) {
-        lm = CLLocationManager()
-        longitude = CLLocationDegrees()
-        latitude = CLLocationDegrees()
+        self.lm = CLLocationManager()
+        self.longitude = CLLocationDegrees()
+        self.latitude = CLLocationDegrees()
         super.init(coder: aDecoder)
     }
     
     @IBAction func btnGetLocation(sender: AnyObject) {
         // get lat and long
-        lm.startUpdatingLocation()
+        self.lm.startUpdatingLocation()
     }
     
     override func viewDidLoad() {
@@ -44,25 +44,57 @@ class ViewController: UIViewController, CLLocationManagerDelegate, NSXMLParserDe
         self.tableView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: self.cellIdentifier)
         
         // 現在地の取得
-        lm = CLLocationManager()
-        lm.delegate = self
-        
-        // セキュリティ認証のステータスを取得
-        let status = CLLocationManager.authorizationStatus()
-        
-        // まだ認証が得られていない場合は、認証ダイアログを表示
-        if status == CLAuthorizationStatus.NotDetermined {
-            println("didChangeAuthorizationStatus:\(status)");
-            // まだ承認が得られていない場合は、認証ダイアログを表示
-            self.lm.requestAlwaysAuthorization()
-        }
-        
+        self.lm = CLLocationManager()
+        self.lm.delegate = self
         // 取得精度の設定
-        lm.desiredAccuracy = kCLLocationAccuracyBest
+        self.lm.desiredAccuracy = kCLLocationAccuracyBest
         // 取得頻度の設定
-        lm.distanceFilter = 100
+        self.lm.distanceFilter = 100
+        
+        if lm.respondsToSelector("requestWhenInUseAuthorization") {
+            // iOS8
+            // セキュリティ認証のステータスを取得
+            let status = CLLocationManager.authorizationStatus()
+            switch status {
+            case .NotDetermined:
+                println("not determined")
+                // まだ認証が得られていない場合は、認証ダイアログを表示
+                self.lm.requestAlwaysAuthorization()
+            case .Authorized:
+                println("authorized")
+                self.lm.startUpdatingLocation()
+            case .AuthorizedWhenInUse:
+                println("authorized when in use")
+                self.lm.startUpdatingLocation()
+            case .Denied:
+                println("denied");
+            case .Restricted:
+                println("restricted");
+            }
+        }
+        else {
+            // iOS7未満
+            self.lm.startUpdatingLocation()
+        }
     }
-
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+        case .Authorized:
+            println("authorized")
+            self.lm.startUpdatingLocation()
+        case .AuthorizedWhenInUse:
+            println("authorized when in use")
+            self.lm.startUpdatingLocation()
+        case .Denied:
+            println("denied")
+        case .NotDetermined:
+            println("not determined")
+        case .Restricted:
+            println("restricted")
+        }
+    }
+    
     // 位置情報取得成功時
     func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!){
         
